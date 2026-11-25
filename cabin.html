@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111519">
+  <meta name="description" content="Create TOE3 cabin skin JSON records with DST Template Maker.">
+
+  <title>Cabin Editor | TOE3 Maker</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Shared functionality -->
+  <script src="app.js" defer></script>
+
+  <!-- Cabin-specific functionality -->
+  <script src="cabin.js" defer></script>
+</head>
+
+<body class="editor-page">
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+    <a href="index.html" class="brand" aria-label="TOE3 Maker Home">
+      <span class="brand-mark">DST</span>
+
+      <span class="brand-details">
+        <strong>DST TOOLS</strong>
+        <small>TOE3 TEMPLATE MAKER</small>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <button
+        type="button"
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Switch to light mode"
+        aria-pressed="false"
+      >
+        <span class="theme-icon" id="themeIcon" aria-hidden="true">☀</span>
+        <span class="theme-label" id="themeLabel">Light mode</span>
+      </button>
+    </div>
+  </header>
+
+
+  <!-- MAIN CONTENT -->
+
+  <main class="editor-main">
+
+    <a href="index.html" class="back-link">
+      <span aria-hidden="true">←</span>
+      Back to TOE3 Maker
+    </a>
+
+    <section class="editor-page-heading">
+      <span class="section-eyebrow">TOE3 / CABIN EDITOR</span>
+
+      <h1>Cabin Skin Records</h1>
+
+      <p>
+        Create structured JSON records for TOE3 cabin skins.
+        Select a truck brand and model, enter the skin details,
+        and generate your record.
+      </p>
+    </section>
+
+
+    <!-- CABIN FORM -->
+
+    <section
+      class="form-panel"
+      id="cabinFormPanel"
+    >
+
+      <div class="form-panel-heading">
+        <h2>Cabin Skin Details</h2>
+        <p>Complete all required fields before generating JSON.</p>
+      </div>
+
+      <form id="cabinForm" novalidate>
+
+        <!-- CONSTANT FIELDS -->
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="brandSelect">
+              Truck Brand
+              <span class="required-mark">*</span>
+            </label>
+
+            <select
+              class="form-control"
+              id="brandSelect"
+              name="brand"
+              required
+            >
+              <option value="">None</option>
+
+              <option value="dawn">Dawn</option>
+              <option value="moon">Moon</option>
+              <option value="fiora">Fiora</option>
+              <option value="volcano">Volcano</option>
+              <option value="stream">Stream</option>
+              <option value="renovate">Renovate</option>
+              <option value="merieles">Merieles</option>
+              <option value="ivora">Ivora</option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="vehicleSelect">
+              Vehicle Model
+              <span class="required-mark">*</span>
+            </label>
+
+            <select
+              class="form-control"
+              id="vehicleSelect"
+              name="vehicleName"
+              required
+              disabled
+            >
+              <option value="">None</option>
+            </select>
+          </div>
+
+
+          <!-- VARIABLE FIELDS -->
+
+          <div class="form-group full-width">
+            <label for="skinName">
+              Skin Name
+              <span class="required-mark">*</span>
+            </label>
+
+            <input
+              class="form-control"
+              type="text"
+              id="skinName"
+              name="skinName"
+              placeholder="e.g. Ashborn"
+              autocomplete="off"
+              maxlength="100"
+              required
+            >
+
+            <p class="field-hint">
+              Letters, numbers, spaces, hyphens, apostrophes
+              and ampersands are allowed. No emojis or decorative symbols.
+            </p>
+          </div>
+
+
+          <div class="form-group full-width">
+            <label for="imageUrl">
+              Preview Image
+              <span class="required-mark">*</span>
+            </label>
+
+            <p>Image of the truck with the skin applied.</p>
+
+            <input
+              class="form-control"
+              type="url"
+              id="imageUrl"
+              name="imageUrl"
+              placeholder="https://..."
+              autocomplete="url"
+              inputmode="url"
+              required
+            >
+
+            <div class="image-preview" id="imagePreview">
+              <span class="image-preview-placeholder">
+                Finished skin preview will appear here.
+              </span>
+            </div>
+
+            <p
+              class="field-hint"
+              id="imageUrlStatus"
+              aria-live="polite"
+            ></p>
+          </div>
+
+
+          <div class="form-group full-width">
+            <label for="templateUrl">
+              Template Image
+              <span class="required-mark">*</span>
+            </label>
+
+            <p>The actual template of the skin.</p>
+
+            <input
+              class="form-control"
+              type="url"
+              id="templateUrl"
+              name="templateUrl"
+              placeholder="https://..."
+              autocomplete="url"
+              inputmode="url"
+              required
+            >
+
+            <p class="field-hint">
+              Direct image link to the actual skin texture used in TOE3.
+            </p>
+
+            <div class="image-preview" id="templatePreview">
+              <span class="image-preview-placeholder">
+                Skin texture preview will appear here.
+              </span>
+            </div>
+
+            <p
+              class="field-hint"
+              id="templateUrlStatus"
+              aria-live="polite"
+            ></p>
+          </div>
+
+
+          <div class="form-group full-width">
+            <label for="description">
+              Description
+              <span class="required-mark">*</span>
+            </label>
+
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              placeholder="Describe the skin..."
+              maxlength="300"
+              required
+            ></textarea>
+
+            <div class="description-meta">
+              <span class="field-hint">
+                Maximum 300 characters.
+              </span>
+
+              <span
+                class="character-counter"
+                id="descriptionCounter"
+                aria-live="polite"
+              >0 / 300</span>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- DERIVED FIELDS -->
+
+        <div class="derived-fields">
+
+          <span class="derived-heading">
+            AUTOMATICALLY GENERATED
+          </span>
+
+          <div class="form-group">
+            <label for="displayName">
+              Display Name
+            </label>
+
+            <input
+              class="form-control derived-control"
+              type="text"
+              id="displayName"
+              name="displayName"
+              placeholder="Generated automatically"
+              readonly
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="recordId">
+              Record ID
+            </label>
+
+            <input
+              class="form-control derived-control"
+              type="text"
+              id="recordId"
+              name="id"
+              placeholder="Generated automatically"
+              readonly
+            >
+          </div>
+
+        </div>
+
+
+        <!-- FORM ACTIONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="reset"
+            class="button button-secondary"
+            id="resetCabinForm"
+          >
+            Reset
+          </button>
+
+          <button
+            type="submit"
+            class="button button-primary"
+            id="generateCabinButton"
+            disabled
+          >
+            Generate JSON
+            <span aria-hidden="true">→</span>
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+    <!-- GENERATED JSON WORKSPACE -->
+
+    <section
+      class="output-section"
+      id="cabinOutputSection"
+    >
+
+      <div class="output-panel">
+
+        <div class="output-heading">
+          <h2>Generated JSON</h2>
+
+          <span class="output-status" id="cabinOutputIndicator">
+            EMPTY
+          </span>
+        </div>
+
+        <textarea
+          class="json-output"
+          id="jsonOutput"
+          readonly
+          spellcheck="false"
+          aria-label="Generated cabin JSON"
+          placeholder="Your generated JSON record will appear here..."
+        ></textarea>
+
+        <div class="output-actions">
+
+          <button
+            type="button"
+            class="button button-secondary"
+            id="clearCabinOutput"
+          >
+            Clear
+          </button>
+
+          <button
+            type="button"
+            class="button button-primary"
+            id="copyCabinOutput"
+            disabled
+          >
+            Copy JSON
+          </button>
+
+        </div>
+
+        <div class="temporary-save-action"><br />
+
+          <button
+            type="button"
+            class="button button-primary"
+            id="saveCabinToTemporaryStorage"
+            disabled
+          >
+            Save to Temporary Storage
+          </button>
+
+        </div>
+
+        <div
+          class="status-message"
+          id="cabinOutputStatus"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CABIN TEMPORARY STORAGE -->
+
+    <section
+      class="temporary-storage-section"
+      id="cabinTemporaryStorage"
+      aria-labelledby="cabinTemporaryStorageHeading"
+    >
+
+      <div class="temporary-storage-panel">
+
+        <div class="temporary-storage-heading">
+
+          <div>
+            <span class="section-eyebrow">LOCAL DATA STORAGE</span>
+            <h2 id="cabinTemporaryStorageHeading">
+              Temporary Storage
+            </h2>
+
+            <p>
+              Saved cabin records stay on this device for seven days.
+            </p>
+          </div>
+
+          <div
+            class="storage-counter"
+            id="cabinStorageCounter"
+            role="status"
+            aria-live="polite"
+          >
+            <span class="storage-count" id="cabinStorageCount">0</span>
+            <span class="storage-limit">/ 25</span>
+          </div>
+
+        </div>
+
+
+        <!-- STORED ENTRY LIST -->
+
+        <div
+          class="temporary-storage-list"
+          id="cabinStorageList"
+          aria-live="polite"
+          aria-label="Stored cabin entries"
+        >
+
+          <p
+            class="storage-empty-state"
+            id="cabinStorageEmpty"
+          >
+            No cabin records have been saved yet.
+          </p>
+
+          <!-- Individual entries will be rendered here by cabin.js. -->
+
+        </div>
+
+
+        <!-- STORAGE ACTIONS -->
+
+        <div class="temporary-storage-actions">
+
+          <button
+            type="button"
+            class="button button-secondary"
+            id="copyAllCabinEntries"
+            disabled
+          >
+            Copy All Data Entries
+          </button>
+
+          <button
+            type="button"
+            class="button button-secondary"
+            id="sendCabinToDST"
+            disabled
+            aria-label="Send cabin entries to DST, functionality not yet available"
+          >
+            Send to DST
+          </button>
+
+          <button
+            type="button"
+            class="button button-danger"
+            id="clearCabinTemporaryStorage"
+            disabled
+          >
+            Clear Temporary Storage
+          </button>
+
+        </div>
+
+        <p class="storage-footnote">
+          Maximum 25 entries. Expired entries are automatically removed.
+          Stored records are not shared between Cabin and Trailer editors.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <strong>DST TOOLS

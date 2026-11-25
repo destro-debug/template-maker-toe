@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111519">
+  <meta name="description" content="Submit TOE3 skin records to the DST team.">
+  <title>Submit Records | DST TOE3 Maker</title>
+
+  <link rel="stylesheet" href="./styles.css">
+
+  <style>
+    /* --------------------------------------------------
+       SUBMISSION PAGE
+    -------------------------------------------------- */
+
+    #submitPage {
+      --submit-bg: #111519;
+      --submit-panel: #1c242a;
+      --submit-panel-soft: #202a31;
+      --submit-border: #303b44;
+      --submit-text: #edf3f5;
+      --submit-muted: #9aaab2;
+      --submit-accent: #35c6d9;
+      --submit-accent-strong: #20aec2;
+      --submit-input: #141b20;
+      --submit-success: #55c98a;
+      --submit-danger: #ed7777;
+
+      width: min(100% - 36px, 820px);
+      margin: 0 auto;
+      padding: 34px 0 64px;
+      color: var(--submit-text);
+    }
+
+    html[data-theme="light"] #submitPage {
+      --submit-bg: #f2f6f7;
+      --submit-panel: #ffffff;
+      --submit-panel-soft: #f4f8f9;
+      --submit-border: #d5e0e4;
+      --submit-text: #18242a;
+      --submit-muted: #657780;
+      --submit-accent: #078da2;
+      --submit-accent-strong: #06798b;
+      --submit-input: #f8fbfc;
+      --submit-success: #16834c;
+      --submit-danger: #c64b4b;
+    }
+
+    #submitPage *,
+    #submitPage *::before,
+    #submitPage *::after {
+      box-sizing: border-box;
+    }
+
+    .submit-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .submit-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      color: var(--submit-text);
+    }
+
+    .submit-brand strong {
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+    }
+
+    .submit-brand span {
+      color: var(--submit-muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .submit-back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 15px;
+      border: 1px solid var(--submit-border);
+      border-radius: 8px;
+      color: var(--submit-muted);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 650;
+      transition:
+        color 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+    }
+
+    .submit-back-link:hover {
+      color: var(--submit-text);
+      border-color: var(--submit-accent);
+      background: var(--submit-panel-soft);
+    }
+
+    .submit-intro {
+      margin-bottom: 25px;
+    }
+
+    .submit-eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--submit-accent);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .submit-intro h1 {
+      margin: 0;
+      color: var(--submit-text);
+      font-size: clamp(1.8rem, 5vw, 2.45rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    .submit-intro p {
+      max-width: 620px;
+      margin: 12px 0 0;
+      color: var(--submit-muted);
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .submit-panel {
+      padding: 25px;
+      border: 1px solid var(--submit-border);
+      border-radius: 12px;
+      background: var(--submit-panel);
+    }
+
+    .submit-panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .submit-panel-heading h2 {
+      margin: 0;
+      color: var(--submit-text);
+      font-size: 1.12rem;
+      font-weight: 750;
+    }
+
+    .submit-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      min-height: 30px;
+      padding: 3px 10px;
+      border: 1px solid var(--submit-border);
+      border-radius: 7px;
+      color: var(--submit-accent);
+      background: var(--submit-panel-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .submit-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .submit-field label {
+      color: var(--submit-text);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .submit-field small {
+      color: var(--submit-muted);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .submit-field input,
+    .submit-field textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 12px 14px;
+      border: 1px solid var(--submit-border);
+      border-radius: 8px;
+      outline: none;
+      color: var(--submit-text);
+      background: var(--submit-input);
+      font: inherit;
+      font-size: 0.94rem;
+      transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .submit-field input {
+      min-height: 48px;
+    }
+
+    .submit-field textarea {
+      min-height: 104px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .submit-field input:focus,
+    .submit-field textarea:focus {
+      border-color: var(--submit-accent);
+      box-shadow: 0 0 0 3px color-mix(
+        in srgb,
+        var(--submit-accent) 15%,
+        transparent
+      );
+    }
+
+    .submit-field textarea[readonly] {
+      min-height: 230px;
+      color: var(--submit-muted);
+      cursor: text;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .submit-record-summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px;
+      margin: -5px 0 20px;
+    }
+
+    .submit-record-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 29px;
+      padding: 4px 10px;
+      border: 1px solid var(--submit-border);
+      border-radius: 6px;
+      color: var(--submit-muted);
+      background: var(--submit-panel-soft);
+      font-size: 0.77rem;
+      font-weight: 700;
+    }
+
+    .submit-record-tag strong {
+      margin-left: 5px;
+      color: var(--submit-accent);
+    }
+
+    .submit-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .submit-send-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 49px;
+      min-width: 170px;
+      padding: 0 22px;
+      border: 1px solid var(--submit-accent);
+      border-radius: 8px;
+      color: #07191d;
+      background: var(--submit-accent);
+      font: inherit;
+      font-size: 0.91rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease,
+        opacity 180ms ease;
+    }
+
+    .submit-send-button:hover:not(:disabled) {
+      border-color: var(--submit-accent-strong);
+      background: var(--submit-accent-strong);
+      transform: translateY(-2px);
+    }
+
+    .submit-send-button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .submit-send-button:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-send-button .submit-arrow {
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .submit-status {
+      display: none;
+      margin-top: 19px;
+      padding: 13px 15px;
+      border: 1px solid var(--submit-border);
+      border-radius: 8px;
+      color: var(--submit-muted);
+      background: var(--submit-panel-soft);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .submit-status.is-visible {
+      display: block;
+    }
+
+    .submit-status.is-success {
+      border-color: color-mix(
+        in srgb,
+        var(--submit-success) 45%,
+        var(--submit-border)
+      );
+      color: var(--submit-success);
+    }
+
+    .submit-status.is-error {
+      border-color: color-mix(
+        in srgb,
+        var(--submit-danger) 45%,
+        var(--submit-border)
+      );
+      color: var(--submit-danger);
+    }
+
+    .submit-empty {
+      padding: 25px;
+      border: 1px dashed var(--submit-border);
+      border-radius: 10px;
+      background: var(--submit-panel);
+      text-align: center;
+    }
+
+    .submit-empty h2 {
+      margin: 0 0 9px;
+      color: var(--submit-text);
+      font-size: 1.1rem;
+    }
+
+    .submit-empty p {
+      margin: 0;
+      color: var(--submit-muted);
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    .submit-footer {
+      margin-top: 28px;
+      color: var(--submit-muted);
+      font-size: 0.78rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      #submitPage {
+        width: min(100% - 26px, 820px);
+        padding-top: 24px;
+      }
+
+      .submit-header {
+        margin-bottom: 28px;
+      }
+
+      .submit-panel {
+        padding: 19px;
+      }
+
+      .submit-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .submit-send-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #submitPage *,
+      #submitPage *::before,
+      #submitPage *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+
+  <script src="./app.js" defer></script>
+  <script src="./submit.js" defer></script>
+</head>
+
+<body>
+  <main id="submitPage">
+
+    <header class="submit-header">
+      <a class="submit-brand" href="./index.html">
+        <strong>DST</strong>
+        <span>TOE3 Maker</span>
+      </a>
+
+      <a class="submit-back-link" href="./index.html">
+        ← Back to Maker
+      </a>
+    </header>
+
+
+    <section class="submit-intro">
+      <span class="submit-eyebrow">Submission Portal</span>
+
+      <h1>Send your skin records</h1>
+
+      <p>
+        Review your stored records and send them to the DST team.
+        Your entries will remain in Temporary Storage after submission.
+      </p>
+    </section>
+
+
+    <section id="submitEmptyState" class="submit-empty" hidden>
+      <h2>No records to submit</h2>
+
+      <p>
+        There is no pending submission here. Return to the Maker,
+        save some records to Temporary Storage, and use the Send to DST
+        button to continue.
+      </p>
+    </section>
+
+
+    <section id="submitFormSection" class="submit-panel" hidden>
+
+      <div class="submit-panel-heading">
+        <h2>Submission details</h2>
+
+        <span
+          id="submitRecordCount"
+          class="submit-count"
+          aria-label="Number of records"
+        >0</span>
+      </div>
+
+
+      <div class="submit-record-summary">
+        <span class="submit-record-tag">
+          Cabin <strong id="submitCabinCount">0</strong>
+        </span>
+
+        <span class="submit-record-tag">
+          Trailer <strong id="submitTrailerCount">0</strong>
+        </span>
+      </div>
+
+
+      <form id="dstSubmissionForm">
+
+        <div class="submit-field">
+          <label for="submissionName">
+            Name
+          </label>
+
+          <input
+            id="submissionName"
+            name="name"
+            type="text"
+            maxlength="80"
+            value="Anonymous"
+            autocomplete="name"
+          >
+
+          <small>
+            Optional. Leave the default name or enter your preferred name.
+          </small>
+        </div>
+
+
+        <div class="submit-field">
+          <label for="submissionMessage">
+            Message
+          </label>
+
+          <textarea
+            id="submissionMessage"
+            name="message"
+            maxlength="1000"
+            rows="3"
+          >Blank</textarea>
+
+          <small>
+            Optional. Add a note for the DST team.
+          </small>
+        </div>
+
+
+        <div class="submit-field">
+          <label for="submissionCode">
+            JSON records
+          </label>
+
+          <textarea
+            id="submissionCode"
+            name="code"
+            rows="12"
+            readonly
+            spellcheck="false"
+            aria-describedby="submissionCodeHelp"
+          ></textarea>
+
+          <small id="submissionCodeHelp">
+            This contains the complete batch being submitted.
+            It cannot be edited from this page.
+          </small>
+        </div>
+
+
+        <div class="submit-actions">
+          <button
+            id="submitSendButton"
+            class="submit-send-button"
+            type="submit"
+          >
+            <span id="submitButtonText">Send submission</span>
+            <span class="submit-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+
+      </form>
+
+
+      <div
+        id="submitStatus"
+        class="submit-status"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+    </section>
+
+
+    <footer class="submit-footer">
+      DST TOE3 Maker · Submission Portal
+    </footer>
+
+  </main>
+</body>
+</html>
