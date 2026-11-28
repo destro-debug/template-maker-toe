@@ -1,4 +1,3 @@
-
 (() => {
   "use strict";
 
@@ -256,7 +255,12 @@
   DST.json = {
     format(record) {
       try {
-        return JSON.stringify(record, null, 2);
+        const json = JSON.stringify(record, null, 2);
+
+        if (!json) return "";
+
+        // Every generated JSON object ends with a comma.
+        return `${json},`;
       } catch {
         return "";
       }
@@ -264,7 +268,13 @@
 
     parse(value) {
       try {
-        return JSON.parse(value);
+        const cleaned = String(value ?? "")
+          .trim()
+          .replace(/,\s*$/, "");
+
+        if (!cleaned) return null;
+
+        return JSON.parse(cleaned);
       } catch {
         return null;
       }
@@ -687,6 +697,7 @@
     }
   };
 
+
   /* =======================================================
      14. RECORD GENERATION
   ======================================================= */
@@ -784,9 +795,7 @@
       return false;
     }
   };
-
-
-  /* =======================================================
+    /* =======================================================
      16. TEMPORARY STORAGE ENGINE
   ======================================================= */
 
@@ -1084,7 +1093,13 @@
           };
         }
 
-        const json = DST.json.format(records);
+        // Format each record independently.
+        // DST.json.format() adds one trailing comma
+        // after every record, including the final one.
+        const json = records
+          .map((record) => DST.json.format(record))
+          .filter(Boolean)
+          .join("\n");
 
         if (!json) {
           return {
